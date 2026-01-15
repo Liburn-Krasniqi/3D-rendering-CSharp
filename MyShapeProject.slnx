@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ShapeApp/ShapeApp.csproj" />
+  <Project Path="ShapeLibrary/ShapeLibrary.csproj" />
+</Solution>

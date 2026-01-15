@@ -1,0 +1,12 @@
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/bin/Debug/net10.0/ShapeLibrary.deps.json
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/bin/Debug/net10.0/ShapeLibrary.dll
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/bin/Debug/net10.0/ShapeLibrary.pdb
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.GeneratedMSBuildEditorConfig.editorconfig
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.AssemblyInfoInputs.cache
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.AssemblyInfo.cs
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.csproj.CoreCompileInputs.cache
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.dll
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/refint/ShapeLibrary.dll
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.pdb
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ref/ShapeLibrary.dll
+/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.csproj.AssemblyReference.cache
