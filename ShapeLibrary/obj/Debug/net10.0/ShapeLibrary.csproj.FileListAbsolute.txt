@@ -10,3 +10,16 @@
 /Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.pdb
 /Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ref/ShapeLibrary.dll
 /Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.csproj.AssemblyReference.cache
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/bin/Debug/net10.0/ShapeLibrary.deps.json
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/bin/Debug/net10.0/ShapeLibrary.dll
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/bin/Debug/net10.0/ShapeLibrary.pdb
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.csproj.AssemblyReference.cache
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.AssemblyInfoInputs.cache
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.AssemblyInfo.cs
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.csproj.CoreCompileInputs.cache
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.sourcelink.json
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.dll
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/refint/ShapeLibrary.dll
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ShapeLibrary.pdb
+/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/Debug/net10.0/ref/ShapeLibrary.dll

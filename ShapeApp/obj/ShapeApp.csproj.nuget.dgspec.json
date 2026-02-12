@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeApp/ShapeApp.csproj": {}
+    "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeApp/ShapeApp.csproj": {}
   },
   "projects": {
-    "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeApp/ShapeApp.csproj": {
+    "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeApp/ShapeApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeApp/ShapeApp.csproj",
+        "projectUniqueName": "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeApp/ShapeApp.csproj",
         "projectName": "ShapeApp",
-        "projectPath": "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeApp/ShapeApp.csproj",
-        "packagesPath": "/Users/liburn/.nuget/packages/",
-        "outputPath": "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeApp/obj/",
+        "projectPath": "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeApp/ShapeApp.csproj",
+        "packagesPath": "/Users/ritech/.nuget/packages/",
+        "outputPath": "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeApp/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/liburn/.nuget/NuGet/NuGet.Config"
+          "/Users/ritech/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -26,8 +26,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/ShapeLibrary.csproj": {
-                "projectPath": "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/ShapeLibrary.csproj"
+              "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/ShapeLibrary.csproj": {
+                "projectPath": "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/ShapeLibrary.csproj"
               }
             }
           }
@@ -69,7 +69,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.101/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",
@@ -347,17 +347,17 @@
         }
       }
     },
-    "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/ShapeLibrary.csproj": {
+    "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/ShapeLibrary.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/ShapeLibrary.csproj",
+        "projectUniqueName": "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/ShapeLibrary.csproj",
         "projectName": "ShapeLibrary",
-        "projectPath": "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/ShapeLibrary.csproj",
-        "packagesPath": "/Users/liburn/.nuget/packages/",
-        "outputPath": "/Users/liburn/Desktop/curr/Ritech-Internship/test2/ShapeLibrary/obj/",
+        "projectPath": "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/ShapeLibrary.csproj",
+        "packagesPath": "/Users/ritech/.nuget/packages/",
+        "outputPath": "/Users/ritech/Desktop/liburn/3D-rendering-CSharp/ShapeLibrary/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/liburn/.nuget/NuGet/NuGet.Config"
+          "/Users/ritech/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -408,7 +408,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.101/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.102/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.CSharp": "(,4.7.32767]",
             "Microsoft.VisualBasic": "(,10.4.32767]",

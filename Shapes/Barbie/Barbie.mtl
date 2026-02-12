@@ -1,0 +1,122 @@
+# MTL file - created by a modified js OBJExporter
+
+newmtl Barbie_75_Leg
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 1
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+
+newmtl Barbie
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 1
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+
+newmtl Barbie_75_Arm
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 1
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+
+newmtl Barbie_75_Head
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 1
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+
+newmtl Swimsuit
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.8999999761581421
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.800000011920929 0.800000011920929 0.800000011920929
+Ke 0 0 0
+
+newmtl Thread
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.8999999761581421
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 1 1 1
+Ke 0 0 0
+
+newmtl Brass
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.17692309617996216
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.8650979995727539 0.5537495613098145 0.1189630925655365
+Ke 0 0 0
+
+newmtl Heels
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.5
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0 0 0
+Ke 0 0 0
+
+newmtl Glasses
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.3999999761581421
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.800000011920929 0.800000011920929 0.800000011920929
+Ke 0 0 0
+
+newmtl Lens
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.13846147060394287
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.012841534800827503 0.25587138533592224 0.8002511262893677
+Ke 0 0 0
+
+newmtl Hair
+Tr 0.0000
+Tf 1.0000 1.0000 1.0000
+illum 1
+Pr 0.5
+Pds 1
+Pl 1
+Ka 1 1 1
+Kd 0.800000011920929 0.800000011920929 0.800000011920929
+Ke 0 0 0

@@ -10,6 +10,8 @@ class Program
     const int screenHeight = screenWidth;
     const int universeCenter = 2;
 
+    public static readonly float[] scroll_limit = [2.1f, 3.2f];
+
     
 
     static Vector2 onScreen(Vector2 point){
@@ -42,7 +44,7 @@ class Program
     
     static void line(Vector2 startPos, Vector2 endPos){
 
-        DrawLineV(startPos, endPos, Color.Green);
+        DrawLineV(startPos, endPos, Color.Pink);
     }
 
     static void drawShape(float [][] vectors, int [][] faces){
@@ -90,25 +92,70 @@ class Program
     );
     }
 
+    public static Vector3 rotate_xy(Vector3 point, double angle){
+
+    float C =(float) Math.Cos(angle);
+    float S =(float) Math.Sin(angle);
+
+    // \(x^{\prime }=x\cos \theta +z\sin \theta \)
+
+    // \(z^{\prime }=-x\sin \theta +z\cos \theta \)
+
+    return new Vector3(
+        (point.X*C) - (point.Y*S),
+        (point.X*S) + (point.Y*C),
+        point.Z
+    );
+    }
+
+    public static Vector3 rotate_yz(Vector3 point, double angle){
+
+    float C =(float) Math.Cos(angle);
+    float S =(float) Math.Sin(angle);
+
+    // \(x^{\prime }=x\cos \theta +z\sin \theta \)
+
+    // \(z^{\prime }=-x\sin \theta +z\cos \theta \)
+
+    return new Vector3(
+        point.X,
+        (point.Y*C) - (point.Z*S),
+        (point.Y*S) + (point.Z*C)
+    );
+    }
+
+    public static void Scroll(float wheel)
+    {
+        
+    }
 
     static void Main()
     {
-        Shape penger = Parser.readShape("Penger");
-        Shape cube = Parser.readShape("Cube");
+        // Shape penger = Parser.ReadShape("Penger");
+        // Shape cube = Parser.ReadShape("Cube");
+        // Shape pengerWavefront = Parser.ReadWavefrontObject("Penger");
+        // Shape penguin = Parser.ReadWavefrontObject("Penguin");
+        Shape barbie = Parser.ReadWavefrontObject("Barbie");
+
+        barbie.Recenter(new Vector3(0,-150,10));
+        // penguin.Recenter(new Vector3(0,0,50));
+        barbie.Scale(85f);
+        // penguin.Scale(60f);
+        // pengerWavefront.Recenter(new Vector3(0,-0.5f,0));
+
         int currentFps = 60;
         double angle = 80;
 
         InitWindow(screenWidth, screenHeight, "3D engine");
 
         SetTargetFPS(currentFps);
-        SetWindowPosition(500, -400); // to place on second monitor
+        SetWindowPosition(100, -400); // to place on second monitor
 
         SetExitKey(KeyboardKey.Null);
 
         Vector2 deltaCircle = new Vector2(0, (float)screenHeight/3.0f);
 
         const float speed = 10.0f;
-        const float circleRadius = 32.0f;
 
         while (!WindowShouldClose())
         {
@@ -119,15 +166,19 @@ class Program
             angle +=  Math.PI * (1/(double)currentFps * 0.5d);
             // Console.WriteLine(angle);
 
+            float wheel = Raylib.GetMouseWheelMove();
 
+            Scroll(wheel);
 
             BeginDrawing();
                 ClearBackground(Color.Black);
                 // point(onScreen(project(new Vector3(0, 0, 1))));
                 // DrawCircleV(deltaCircle, circleRadius, Color.Green);
                 // drawShape(VS, FS);
-                drawShapeObj(penger, angle);
-                drawShapeObj(cube, angle);
+                // drawShapeObj(penguin, angle);
+                drawShapeObj(barbie, angle);
+                // drawShapeObj(pengerWavefront, angle);
+                // drawShapeObj(cube, angle);
                 // werk on here
                 // foreach(int [] i in FS){
                 //     for(int j = 0; j<i.Length; j++){
