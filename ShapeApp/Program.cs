@@ -8,11 +8,12 @@ class Program
 {
     const int screenWidth = 800;
     const int screenHeight = screenWidth;
-    const int universeCenter = 2;
-
+    public static float universeCenter = 2;
     public static readonly float[] scroll_limit = [2.1f, 3.2f];
 
-    
+    public static double xz_angle = 0;
+    // double xy_angle = 80;
+    public static double yz_angle = 0;
 
     static Vector2 onScreen(Vector2 point){
         // -1..1 => 0..2 => 0..1 => 0..w/h 
@@ -62,15 +63,15 @@ class Program
                 }
     }
 
-    static void drawShapeObj(Shape shape, double angle){
+    static void drawShapeObj(Shape shape){
         foreach(int [] i in shape.faces){
                     for(int j = 0; j<i.Length; j++){
                     Vector3 A = shape.vectors[i [(j+1)% i.Length ]];
                     Vector3 B = shape.vectors[i [(j+2)% i.Length ]];
 
                      line(
-                        onScreen(project(translate_z(rotate_xz(A, angle), universeCenter))),
-                        onScreen(project(translate_z(rotate_xz(B, angle), universeCenter)))
+                        onScreen(project(translate_z(rotate_yz(rotate_xz(A, xz_angle),yz_angle), universeCenter))),
+                        onScreen(project(translate_z(rotate_yz(rotate_xz(B, xz_angle),yz_angle), universeCenter)))
                     );
                     }
                 }
@@ -126,25 +127,56 @@ class Program
 
     public static void Scroll(float wheel)
     {
+        if( wheel > 0 && universeCenter <= scroll_limit[1]){
+            universeCenter += 0.75f;
+        }else if( wheel < 0 && universeCenter >= scroll_limit[0]){
+            universeCenter -= 0.75f;
+        }
+
         
+    }
+
+    public static void Rotate(Vector2 delta)
+    {
+        //     # yz_angle change
+        // if rel_y > 0:
+        //     yz_angle -= math.pi * (rel_y*0.001)
+        // elif rel_y < 0:
+        //     yz_angle -= math.pi * (rel_y*0.001)
+
+        // X - AXIS ROTATION
+        if (delta.Y > 0) yz_angle -= Math.PI * (delta.Y*0.001);
+        else if(delta.Y < 0) yz_angle -= Math.PI * (delta.Y*0.001);
+
+        // # xz_angle change
+        // if rel_x > 0:
+        //     xz_angle += math.pi * (rel_x*0.001)
+        // elif rel_x < 0:
+        //     xz_angle += math.pi * (rel_x*0.001)
+
+        // Y - AXIS ROTATION
+        if (delta.X > 0) xz_angle -= Math.PI * (delta.X*0.001);
+        else if(delta.X < 0) xz_angle -= Math.PI * (delta.X*0.001);
+
     }
 
     static void Main()
     {
         // Shape penger = Parser.ReadShape("Penger");
         // Shape cube = Parser.ReadShape("Cube");
-        // Shape pengerWavefront = Parser.ReadWavefrontObject("Penger");
+        Shape pengerWavefront = Parser.LoadObj("Penger");
         // Shape penguin = Parser.ReadWavefrontObject("Penguin");
-        Shape barbie = Parser.ReadWavefrontObject("Barbie");
+        // Shape barbie = Parser.ReadWavefrontObject("Barbie");
 
-        barbie.Recenter(new Vector3(0,-150,10));
+        // barbie.Recenter(new Vector3(0,-150,10));
         // penguin.Recenter(new Vector3(0,0,50));
-        barbie.Scale(85f);
+        // barbie.Scale(85f);
         // penguin.Scale(60f);
-        // pengerWavefront.Recenter(new Vector3(0,-0.5f,0));
+        pengerWavefront.Recenter(new Vector3(0,-0.5f,0));
 
         int currentFps = 60;
-        double angle = 80;
+
+        
 
         InitWindow(screenWidth, screenHeight, "3D engine");
 
@@ -156,6 +188,9 @@ class Program
         Vector2 deltaCircle = new Vector2(0, (float)screenHeight/3.0f);
 
         const float speed = 10.0f;
+        
+        bool dragging = false;
+        Vector2 lastMousePos = Vector2.Zero;
 
         while (!WindowShouldClose())
         {
@@ -163,12 +198,37 @@ class Program
             deltaCircle.X += GetFrameTime()*6.0f*speed;
 
             // Console.WriteLine(deltaCircle.X);
-            angle +=  Math.PI * (1/(double)currentFps * 0.5d);
+            // angle +=  Math.PI * (1/(double)currentFps * 0.5d);
             // Console.WriteLine(angle);
 
-            float wheel = Raylib.GetMouseWheelMove();
+            float wheel = GetMouseWheelMove();
+
+            Vector2 mouse = GetMousePosition();
 
             Scroll(wheel);
+
+            if (IsMouseButtonPressed(MouseButton.Left))
+            {
+                dragging = true;
+                lastMousePos = mouse;
+            }
+
+            if (dragging)
+            {
+                if (IsMouseButtonDown(MouseButton.Left))
+                {
+                    Vector2 delta = mouse - lastMousePos;
+
+                    Rotate(delta);
+
+                    lastMousePos = mouse;
+                }
+            }
+            else
+            {
+                dragging = false;
+            }
+
 
             BeginDrawing();
                 ClearBackground(Color.Black);
@@ -176,7 +236,7 @@ class Program
                 // DrawCircleV(deltaCircle, circleRadius, Color.Green);
                 // drawShape(VS, FS);
                 // drawShapeObj(penguin, angle);
-                drawShapeObj(barbie, angle);
+                drawShapeObj(pengerWavefront);
                 // drawShapeObj(pengerWavefront, angle);
                 // drawShapeObj(cube, angle);
                 // werk on here
