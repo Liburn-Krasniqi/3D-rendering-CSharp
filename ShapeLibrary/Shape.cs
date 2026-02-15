@@ -11,17 +11,41 @@ namespace ShapeLibrary;
 
 public class Face
 {
-    public int [] vertex_indicies;
-    public int [] texture_indicies;
+    // arrays can be of many lengths (+3)
+    public List<int> vertex_indicies;  // we use this cause faces have a 3+ number of verteces (triangle, quad, polygon)
+    public List<int> texture_indicies;
+    public List<int> vertex_normals_indicies;  
 
-    // public int [] vertex_normals_indicies;
-
-
-    public Face(int [] vertex_indicies, int [] texture_indicies)
+    public Face(List<int> vertex_indicies, List<int> texture_indicies, List<int> vertex_normals_indicies)
     {
         this.vertex_indicies = vertex_indicies;
         this.texture_indicies = texture_indicies;
+        this.vertex_normals_indicies = vertex_normals_indicies;
+    }
+    public Face()
+    {
+        vertex_indicies = new List<int>();
+        texture_indicies = new List<int>();
+        vertex_normals_indicies = new List<int>();
+    }
 
+    // public void Add(int [] vertex_indicies)
+    // {
+    //     this.vertex_indicies.Add(vertex_indicies);
+    // }
+
+    public void AddVI(List<int> vertex_indicies)
+    {
+        this.vertex_indicies = vertex_indicies;
+    }
+    public void AddTI(List<int> texture_indicies)
+    {
+        this.texture_indicies = texture_indicies;
+    }
+
+    public void AddNI(List<int> vertex_normals_indicies)
+    {
+        this.vertex_normals_indicies = vertex_normals_indicies;
     }
 }
 
@@ -30,11 +54,11 @@ public class Shape
     public string name;
     public Vector3 [] vectors;
     public Vector2 [] texture_coordinates;
-    public int[][] faces;
+    public Face [] faces;
     public Vector3 center;
     public float scale;
 
-    public Shape(string name, Vector3 [] vectors, Vector2 [] texture_coordinates, int[][] faces, Vector3? center = null, float? scale = null)
+    public Shape(string name, Vector3 [] vectors, Vector2 [] texture_coordinates, Face [] faces, Vector3? center = null, float? scale = null)
     {
         this.name = name;
         this.center = center ?? new Vector3(0, 0, 0);  // Use default if null
@@ -66,7 +90,7 @@ public class Shape
         vectors = vectors.Select(vector => vector / scale).ToArray();
     }
 
-    public void TransformAngle(float scale)
+    public void TransformAngle(float scale)  // huh??
     {
         this.scale = scale;
         vectors = vectors.Select(vector => vector / scale).ToArray();
@@ -88,7 +112,8 @@ public class Parser{
     */
     public static Shape LoadObj(string shape)
     {
-        string filePath = $"/Users/ritech/Desktop/liburn/3D-rendering-CSharp/Shapes/{shape}/{shape}.obj";
+        string filePath        = $"/Users/ritech/Desktop/liburn/3D-rendering-CSharp/Shapes/{shape}/{shape}.obj";
+        string filePathTexture = $"/Users/ritech/Desktop/liburn/3D-rendering-CSharp/Shapes/{shape}/{shape}.png";
 
         if (File.Exists(filePath))
         {
@@ -99,29 +124,39 @@ public class Parser{
 
             List<Vector3> vectors = new List<Vector3>();
             List<Vector2> texture_coordinates = new List<Vector2>();
-            List<int[]> faces = new List<int[]>();
+            List<Face> faces = new List<Face>();
 
             for (int i = 0; i < fileContents.Length; i++)
             {
+                Face temp_face = new Face();
+                
                 if(fileContents[i].StartsWith("v "))
                 {
 
-                    float [] temp = fileContents[i].Substring(1).Trim(' ').Split(' ').Select(s => float.Parse(s)).ToArray();
-
+                    float [] temp = fileContents[i].Substring(1).Trim(' ').Split(' ').Select(float.Parse).ToArray();    
                     vectors.Add(new Vector3(temp[0], temp[1], temp[2]));
 
                 }
                 else if (fileContents[i].StartsWith("vt"))
                 {
-                    float [] temp = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(s => float.Parse(s)).ToArray();
+                    float [] temp = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(float.Parse).ToArray();
                     texture_coordinates.Add(new Vector2(temp[0], temp[1]));
                 }
-                else if (fileContents[i].StartsWith("f"))
+                else if (fileContents[i].StartsWith('f'))
                 {
-                    int [] temp = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(s => int.Parse(s.Split('/')[0])-1).ToArray();
+                    // reading face vertex indicies
+                    var temp = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(s => int.Parse(s.Split('/')[0])-1).ToList();
+                    var temp1 = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(s => int.Parse(s.Split('/')[1])-1).ToList();
+                    var temp2 = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(s => int.Parse(s.Split('/')[2])-1).ToList();
                     
-                    faces.Add(temp);
+                    // vertex_indicies.Add(temp);
+                    temp_face.AddVI(temp);
+                    temp_face.AddTI(temp1);
+                    temp_face.AddNI(temp2);
+
                 }
+
+                faces.Add(temp_face);
             }
             
             return new Shape(shape, vectors.ToArray(), texture_coordinates.ToArray(), faces.ToArray(), null);
