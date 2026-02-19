@@ -11,47 +11,34 @@ class Program
     const int screenWidth = 800;
     const int screenHeight = screenWidth;
     public static float universeCenter = 2;
-    public static readonly float[] scroll_limit = [2.1f, 3.2f];
+    public static readonly float[] scroll_limit = [1.1f, 3.2f];
 
     public static double xz_angle = 0;
     // double xy_angle = 80;
     public static double yz_angle = 0;
-
-    static void DrawTexturePoly(
-    Texture2D texture,
-    Vector2 center,
-    Vector2[] points,
-    Vector2[] texcoords,
-    int pointCount,
-    Color tint)
+ static void DrawTexturedTriangles3D(
+        Texture2D texture,
+        Vector2[] positions,
+        Vector2[] texcoords,
+        Color tint)
     {
-        if (pointCount < 3) return;
-
-        Rlgl.SetTexture(texture.Id);
+        if (positions == null || texcoords == null || positions.Length != texcoords.Length || positions.Length % 3 != 0)
+            return;
 
         Rlgl.Begin(DrawMode.Triangles);
+        Rlgl.SetTexture(texture.Id);
         Rlgl.Color4ub(tint.R, tint.G, tint.B, tint.A);
 
-        for (int i = 0; i < pointCount - 1; i++)
+        for (int i = 0; i < positions.Length; i++)
         {
-            // Center vertex
-            Rlgl.TexCoord2f(0.5f, 0.5f);
-            Rlgl.Vertex2f(center.X, center.Y);
-
-            // Vertex i
-            Rlgl.TexCoord2f(texcoords[i].X, texcoords[i].Y);
-            Rlgl.Vertex2f(points[i].X + center.X, points[i].Y + center.Y);
-
-            // Vertex i+1
-            Rlgl.TexCoord2f(texcoords[i + 1].X, texcoords[i + 1].Y);
-            Rlgl.Vertex2f(points[i + 1].X + center.X, points[i + 1].Y + center.Y);
+            Rlgl.TexCoord2f(texcoords[i].X, 1.0f - texcoords[i].Y);
+            Rlgl.Vertex2f(positions[i].X, positions[i].Y);
         }
 
         Rlgl.End();
-
         Rlgl.SetTexture(0);
     }
-    static Vector2 onScreen(Vector2 point)
+    static Vector2 OnScreen(Vector2 point)
     {
         // -1..1 => 0..2 => 0..1 => 0..w/h 
         // type('Obj', (object,), { 'x' : (p.x + 1)/2 * width, 'y' : (p.y + 1)/2 * height})()
@@ -60,7 +47,7 @@ class Program
                              (1 - (point.Y + 1) / 2) * screenHeight);
     }
 
-    static Vector2 project(Vector3 point)
+    static Vector2 Project(Vector3 point)
     {
         //(x,y,z) -> 3d point behind screen
 
@@ -71,60 +58,41 @@ class Program
         return new Vector2(point.X / point.Z, point.Y / point.Z);
     }
 
-    static Vector3 translate_z(Vector3 point, float dz)
+    static Vector3 Translate_z(Vector3 point, float dz)
     {
         // dz ~ delta z
         return new Vector3(point.X, point.Y, point.Z + dz);
     }
 
-    static void point(Vector2 point)
+    static void Point(Vector2 point)
     {
         float size = 10.0f;
         DrawRectangle((int)(point.X - (size / 2)), (int)(point.Y - (size / 2)), (int)size, (int)size, Color.Green);
     }
 
-    static void line(Vector2 startPos, Vector2 endPos)
+    static void Line(Vector2 startPos, Vector2 endPos)
     {
-
         DrawLineV(startPos, endPos, Color.Pink);
     }
 
-    static void drawShape(float[][] vectors, int[][] faces)
-    {
-        foreach (int[] i in faces)
-        {
-            for (int j = 0; j < i.Length; j++)
-            {
-                float[] a = vectors[i[(j + 1) % i.Length]];
-                float[] b = vectors[i[(j + 2) % i.Length]];
-                Vector3 A = new Vector3(a[0], a[1], a[2]);
-                Vector3 B = new Vector3(b[0], b[1], b[2]);
-                line(
-                   onScreen(project(translate_z(A, universeCenter))),
-                   onScreen(project(translate_z(B, universeCenter)))
-               );
-            }
-        }
-    }
-
-    // public static void drawShapeObj(Shape shape)
+    // static void drawWireFrame(float[][] vectors, int[][] faces)
     // {
-    //     foreach(Face i in shape.faces)
+    //     foreach (int[] i in faces)
     //     {
     //         for (int j = 0; j < i.Length; j++)
     //         {
-    //             Vector3 A = shape.vectors[i[(j + 1) % i.Length]];
-    //             Vector3 B = shape.vectors[i[(j + 2) % i.Length]];
-
+    //             float[] a = vectors[i[(j + 1) % i.Length]];
+    //             float[] b = vectors[i[(j + 2) % i.Length]];
+    //             Vector3 A = new Vector3(a[0], a[1], a[2]);
+    //             Vector3 B = new Vector3(b[0], b[1], b[2]);
     //             line(
-    //                onScreen(project(translate_z(rotate_yz(rotate_xz(A, xz_angle), yz_angle), universeCenter))),
-    //                onScreen(project(translate_z(rotate_yz(rotate_xz(B, xz_angle), yz_angle), universeCenter)))
+    //                onScreen(project(translate_z(A, universeCenter))),
+    //                onScreen(project(translate_z(B, universeCenter)))
     //            );
     //         }
     //     }
     // }
-
-    public static void drawShapeObj1(Shape shape)
+    public static void DrawWireFrame(Shape shape)
     {
         foreach (Face face in shape.faces)
         {
@@ -148,16 +116,16 @@ class Program
                 Vector3 B = shape.vectors[idxB];
 
                 // Transform 3d » into 2d (amongst other transformations).
-                var pointA = onScreen(project(translate_z(rotate_yz(rotate_xz(A, xz_angle), yz_angle), universeCenter)));
-                var pointB = onScreen(project(translate_z(rotate_yz(rotate_xz(B, xz_angle), yz_angle), universeCenter)));
+                var pointA = OnScreen(Project(Translate_z(Rotate_yz(Rotate_xz(A, xz_angle), yz_angle), universeCenter)));
+                var pointB = OnScreen(Project(Translate_z(Rotate_yz(Rotate_xz(B, xz_angle), yz_angle), universeCenter)));
 
                 //using said vectors to draw the lines between them
-                line(pointA, pointB);
+                Line(pointA, pointB);
             }
         }
     }
 
-    public static void drawShapeObj(Shape shape)
+    public static void DrawUntextured3DObject(Shape shape)
     {
         foreach (Face face in shape.faces)
         {
@@ -169,33 +137,46 @@ class Program
 
             for(int i = 0; i < indices.Count; i++)
             {
-                vectors[i] = onScreen(project(translate_z(rotate_yz(rotate_xz(shape.vectors[indices[i]], xz_angle), yz_angle), universeCenter)));
+                vectors[i] = OnScreen(Project(Translate_z(Rotate_yz(Rotate_xz(shape.vectors[indices[i]], xz_angle), yz_angle), universeCenter)));
             }
 
             DrawTriangle(vectors[0], vectors[1], vectors[2], Color.DarkBlue);
         }
     }
-   
-    public static void drawShapeObj2(Shape shape)
+    public static void DrawShapeObj3(Shape shape)
+{
+    foreach (Face face in shape.faces)
     {
-        foreach (Face face in shape.faces)
+        if (face.vertex_indicies.Count < 3)
+            continue;
+
+        Vector2[] screenVerts = new Vector2[3];
+        Vector2[] texcoords = new Vector2[3];
+
+        for (int i = 0; i < 3; i++)
         {
-            var indices = face.vertex_indicies; // this can be better
+            screenVerts[i] =
+                OnScreen(
+                    Project(
+                        Translate_z(
+                            Rotate_yz(
+                                Rotate_xz(shape.vectors[face.vertex_indicies[i]], xz_angle),
+                            yz_angle),
+                        universeCenter)));
 
-            // get the vector indices » get the 3d Vectors » transform into 2D vectors » draw polygon with that
-
-            Vector2 [] vectors = new Vector2[3];
-
-            for(int i = 0; i < indices.Count; i++)
-            {
-                vectors[i] = onScreen(project(translate_z(rotate_yz(rotate_xz(shape.vectors[indices[i]], xz_angle), yz_angle), universeCenter)));
-            }
-
-            // DrawTexturePoly(texture, new Vector2(400, 300),points,texcoords, points.Length, Color.White);
+            texcoords[i] = shape.texture_coordinates[face.texture_indicies[i]];
         }
-    }
 
-    public static Vector3 rotate_xz(Vector3 point, double angle)
+        DrawTexturedTriangles3D(
+            shape.texture,
+            screenVerts,
+            texcoords,
+            Color.White
+        );
+    }
+}
+
+    public static Vector3 Rotate_xz(Vector3 point, double angle)
     {
 
         float C = (float)Math.Cos(angle);
@@ -212,7 +193,7 @@ class Program
         );
     }
 
-    public static Vector3 rotate_xy(Vector3 point, double angle)
+    public static Vector3 Rotate_xy(Vector3 point, double angle)
     {
 
         float C = (float)Math.Cos(angle);
@@ -229,7 +210,7 @@ class Program
         );
     }
 
-    public static Vector3 rotate_yz(Vector3 point, double angle)
+    public static Vector3 Rotate_yz(Vector3 point, double angle)
     {
 
         float C = (float)Math.Cos(angle);
@@ -250,11 +231,11 @@ class Program
     {
         if (wheel > 0 && universeCenter <= scroll_limit[1])
         {
-            universeCenter += 0.75f;
+            universeCenter += 0.1f;
         }
         else if (wheel < 0 && universeCenter >= scroll_limit[0])
         {
-            universeCenter -= 0.75f;
+            universeCenter -= 0.1f;
         }
 
 
@@ -286,6 +267,10 @@ class Program
 
     static void Main()
     {
+
+        InitWindow(screenWidth, screenHeight, "3D engine"); // LoadObj() has to be called after InitWindow() so that the program doesnt crash, LoadObj() uses LoadTexture() therefore 
+       
+       
         // Shape penger = Parser.ReadShape("Penger");
         // Shape cube = Parser.ReadShape("Cube");
         Shape pengerWavefront = Parser.LoadObj("Penger");
@@ -296,13 +281,10 @@ class Program
         // penguin.Recenter(new Vector3(0,0,50));
         // barbie.Scale(85f);
         // penguin.Scale(60f);
-        pengerWavefront.Recenter(new Vector3(0, -0.5f, 0));
+        if (pengerWavefront != null)
+            pengerWavefront.Recenter(new Vector3(0, -0.5f, 0));
 
         int currentFps = 60;
-
-
-
-        InitWindow(screenWidth, screenHeight, "3D engine");
 
         SetTargetFPS(currentFps);
         SetWindowPosition(100, -400); // to place on second monitor
@@ -314,10 +296,6 @@ class Program
 
         while (!WindowShouldClose())
         {
-
-            // Console.WriteLine(deltaCircle.X);
-            // angle +=  Math.PI * (1/(double)currentFps * 0.5d);
-            // Console.WriteLine(angle);-
 
             float wheel = GetMouseWheelMove();
 
@@ -352,42 +330,13 @@ class Program
             ClearBackground(Color.Black);
             // point(onScreen(project(new Vector3(0, 0, 1))));
             // DrawCircleV(deltaCircle, circleRadius, Color.Green);
-            // drawShape(VS, FS);
-            // drawShapeObj(penguin, angle);
-            drawShapeObj(pengerWavefront);
-            drawShapeObj1(pengerWavefront);
 
-            // drawShapeObj(pengerWavefront, angle);
-            // drawShapeObj(cube, angle);
-            // werk on here
-            // foreach(int [] i in FS){
-            //     for(int j = 0; j<i.Length; j++){
-            //     float [] a = VS[i [(j+1)% i.Length ]];
-            //     float [] b = VS[i [(j+2)% i.Length ]];
-            //     Vector3 A = new Vector3(a[0], a[1], a[2]);  
-            //     Vector3 B = new Vector3(b[0], b[1], b[2]);
-            //      line(
-            //         onScreen(project(translate_z(A, universeCenter))),
-            //         onScreen(project(translate_z(B, universeCenter)))
-            //     );
-            //     }
-            // }
+            if (pengerWavefront != null)
+                DrawShapeObj3(pengerWavefront); // with textures.
+            // drawShapeObj(pengerWavefront);
+            // drawShapeObj1(pengerWavefront);
 
-            // foreach(float [] v in VS){
-            //     point(onScreen(project(translate_z(new Vector3(v[0], v[1], v[2]), universeCenter))));
-            // }                
-            // for v in VSB:
-            //     pointRed(onScreen(project(translate_z(rotate_xz(v, angle), dz))))
-
-            // point(onScreen(project(translate_z(new Vector3(VS[0][0],VS[0][1],VS[0][2]), universeCenter))));
-            // point(onScreen(project(translate_z(new Vector3(VS[1][0],VS[1][1],VS[1][2]), universeCenter))));
-
-            // DrawLineV(onScreen(project(translate_z(new Vector3(VS[0][0],VS[0][1],VS[0][2]), universeCenter))),
-            //          onScreen(project(translate_z(new Vector3(VS[2][0],VS[2][1],VS[2][2]), universeCenter))), Color.Green);
-            // line(
-            //     onScreen(project(translate_z(new Vector3(VS[0][0],VS[0][1],VS[0][2]), universeCenter))),
-            //     onScreen(project(translate_z(new Vector3(VS[1][0],VS[1][1],VS[1][2]), universeCenter)))
-            //     );
+           
             EndDrawing();
         }
 

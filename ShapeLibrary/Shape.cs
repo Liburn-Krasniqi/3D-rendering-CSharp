@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,6 +57,7 @@ public class Shape
     public Face [] faces;
     public Vector3 center;
     public float scale;
+    public Texture2D texture;
 
     public Shape(string name, Vector3 [] vectors, Vector2 [] texture_coordinates, Face [] faces, Vector3? center = null, float? scale = null)
     {
@@ -76,6 +77,27 @@ public class Shape
         this.vectors = vectors;
         this.texture_coordinates = texture_coordinates;
         this.faces = faces;
+    }
+
+    public Shape(string name, Vector3 [] vectors, Vector2 [] texture_coordinates, Face [] faces, Texture2D texture, Vector3? center = null, float? scale = null)
+    {
+        this.name = name;
+        this.center = center ?? new Vector3(0, 0, 0);  // Use default if null
+        this.scale = scale ?? 1.0f;
+        if(center!=null)
+        {
+            this.vectors = vectors.Select(vector => vector + center ?? new Vector3(0, 0, 0)).ToArray();
+        }
+
+        if(scale!=null)
+        {
+            this.vectors = vectors.Select(vector => vector / (scale ?? 1.0f)).ToArray();
+        }
+
+        this.vectors = vectors;
+        this.texture_coordinates = texture_coordinates;
+        this.faces = faces;
+        this.texture = texture;
     }
 
     public void Recenter(Vector3 center)
@@ -115,20 +137,20 @@ public class Parser{
         string filePath        = $"/Users/ritech/Desktop/liburn/3D-rendering-CSharp/Shapes/{shape}/{shape}.obj";
         string filePathTexture = $"/Users/ritech/Desktop/liburn/3D-rendering-CSharp/Shapes/{shape}/{shape}.png";
 
-        if (File.Exists(filePath))
+        if (File.Exists(filePath) && File.Exists(filePathTexture))
         {
             try
             {
                 
             string [] fileContents = File.ReadAllLines(filePath);
-
+            Texture2D texture = LoadTexture(filePathTexture);
             List<Vector3> vectors = new List<Vector3>();
             List<Vector2> texture_coordinates = new List<Vector2>();
             List<Face> faces = new List<Face>();
 
+
             for (int i = 0; i < fileContents.Length; i++)
             {
-                Face temp_face = new Face();
                 
                 if(fileContents[i].StartsWith("v "))
                 {
@@ -144,6 +166,7 @@ public class Parser{
                 }
                 else if (fileContents[i].StartsWith('f'))
                 {
+                    Face temp_face = new Face();
                     // reading face vertex indicies
                     var temp = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(s => int.Parse(s.Split('/')[0])-1).ToList();
                     var temp1 = fileContents[i].Substring(2).Trim(' ').Split(' ').Select(s => int.Parse(s.Split('/')[1])-1).ToList();
@@ -154,12 +177,13 @@ public class Parser{
                     temp_face.AddTI(temp1);
                     temp_face.AddNI(temp2);
 
+                    faces.Add(temp_face);
+
                 }
 
-                faces.Add(temp_face);
             }
             
-            return new Shape(shape, vectors.ToArray(), texture_coordinates.ToArray(), faces.ToArray(), null);
+            return new Shape(shape, vectors.ToArray(), texture_coordinates.ToArray(), faces.ToArray(), texture, null);
             
             }
             catch(IOException e)
@@ -170,7 +194,10 @@ public class Parser{
         }
         else
         {
-            Console.WriteLine($"File not found: {filePath}");
+            if (!File.Exists(filePath))
+                Console.WriteLine($"OBJ file not found: {filePath}");
+            else
+                Console.WriteLine($"Texture file not found (tried e.g. {shape}.png and {shape?.ToLowerInvariant()}.png in Shapes/{shape}/). Add a PNG there.");
             return null;
         }
     }
